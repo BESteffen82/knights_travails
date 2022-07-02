@@ -43,7 +43,8 @@ class Knight
 		@possible_moves.push(start_coor)				
 		until @possible_moves.empty?			
 			if @move_count >= 1
-				@start_coor = @possible_moves[0].shift							
+				@possible_moves.delete_if{|coors|coors.flatten.empty?}
+				@start_coor = @possible_moves[0].shift			
 			else @start_coor = @possible_moves.shift
 			end
 			moves = KNIGHT_MOVES.map do |coors|			 
