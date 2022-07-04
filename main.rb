@@ -48,9 +48,18 @@ class Knight
 			moves = KNIGHT_MOVES.map do |coors|			 
 				coors.map.with_index{|coor, i| coor + @start_coor[i].to_i}
 			end
+			binding.pry			
+			check_moves(moves)
+			binding.pry
 			@possible_moves.push(moves)
 			@moves_made.push(@start_coor)			
 		  end_coor_reached									  								
+		end		
+	end
+
+	def check_moves(moves)		
+		moves.keep_if do |coors|
+			coors[0].between?(0,7) && coors[1].between?(0,7)			
 		end		
 	end
 	
@@ -69,4 +78,4 @@ class Knight
 end
 
 knight = Knight.new
-knight.knight_coors(["d", 4], ["h", 5])
+knight.knight_coors(["h", 4], ["e", 1])
