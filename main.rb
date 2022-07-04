@@ -28,7 +28,7 @@ class Knight
 		@file_array = board.file		 
 		@possible_moves = []
 		@moves_made = []
-		@move_count = 0			
+		@move_count = 2					
 	end	
 
 	def knight_coors(start_pos, end_pos)		
@@ -37,12 +37,10 @@ class Knight
 		possible_moves(start_coor)				
 	end
 
-	def possible_moves(start_coor)
-		return nil if @start_coor == @end_coor
-		
+	def possible_moves(start_coor)		
 		@possible_moves.push(start_coor)				
 		until @possible_moves.empty?			
-			if @move_count >= 1
+			if @moves_made.size > 0
 				@possible_moves.delete_if{|coors|coors.flatten.empty?}
 				@start_coor = @possible_moves[0].shift			
 			else @start_coor = @possible_moves.shift
@@ -51,13 +49,24 @@ class Knight
 				coors.map.with_index{|coor, i| coor + @start_coor[i].to_i}
 			end
 			@possible_moves.push(moves)
-			@moves_made.push(@start_coor)
+			@moves_made.push(@start_coor)			
+		  end_coor_reached									  								
+		end		
+	end
+	
+	def end_coor_reached
+		if @moves_made.size >= 2 && (@moves_made.size - 1) % 8 == 0			
 			@move_count += 1
-			binding.pry		  								
 		end
-		@possible_moves
-	end																				 		  									
+		if @possible_moves.flatten(1).include?(@end_coor)
+			puts "You made it to #{@end_coor} in #{@move_count} moves!"
+			p @moves_made
+			p @possible_moves
+			binding.pry			
+			exit						
+		end
+	end
 end
 
 knight = Knight.new
-knight.knight_coors(["d", 4], ["e", 6])
+knight.knight_coors(["d", 4], ["h", 5])
