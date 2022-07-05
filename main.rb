@@ -46,22 +46,28 @@ class Knight
 			else @start_coor = @possible_moves.shift
 			end
 			moves = KNIGHT_MOVES.map do |coors|			 
-				coors.map.with_index{|coor, i| coor + @start_coor[i].to_i}
-			end
-			binding.pry			
-			check_moves(moves)
-			binding.pry
-			@possible_moves.push(moves)
-			@moves_made.push(@start_coor)			
+				coors.map.with_index{|coor, i| coor + @start_coor[i].to_i}				
+			end							
+			check_moves(moves)						
+			@moves_made.push(@start_coor)						
+			@possible_moves.push(moves)									
+			binding.pry						
 		  end_coor_reached									  								
 		end		
 	end
 
-	def check_moves(moves)		
+	def check_moves(moves)				
 		moves.keep_if do |coors|
 			coors[0].between?(0,7) && coors[1].between?(0,7)			
+		end
+		moves.each_with_index do |move, move_i|
+			@moves_made.each_with_index do |coor, coor_i|
+				if move == coor
+					moves.delete_at(move_i)
+				end
+			end
 		end		
-	end
+	end	
 	
 	def end_coor_reached
 		if @moves_made.size >= 2 && (@moves_made.size - 1) % 8 == 0			
