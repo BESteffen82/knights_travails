@@ -30,7 +30,7 @@ class Knight
 		@visited_squares = []									
 	end	
 
-	def knight_coors(start_pos, end_pos)		
+	def knight_moves(start_pos, end_pos)		
 		@start_coor = [@file_array.index(start_pos[0]), start_pos[1] - 1]
 		@end_coor = [@file_array.index(end_pos[0]), end_pos[1] - 1]
 		possible_moves(start_coor)				
@@ -50,8 +50,7 @@ class Knight
 			end
 			@visited_squares.push(@start_coor)							
 			check_edges(@moves)													
-			@possible_moves.push(@moves)																						
-			#binding.pry						
+			@possible_moves.push(@moves)									
 		  end_coor_reached									  								
 		end		
 	end
@@ -67,34 +66,51 @@ class Knight
 		@path << @visited_squares.last
 		until @path.last == @visited_squares[0]
 			@next_index = @visited_squares.size - @possible_moves.size			
-			unless @next_index == 0 || @next_index == 1
+			unless @next_index < 2 
 				@path << @visited_squares[@next_index]
 			end			
 			if @next_index == 2 || @next_index == 0
 				@path << @visited_squares[0]
+			elsif @next_index == 32 && @end_coor[0] == @end_coor[1]				
+				@path << @visited_squares[(@next_index / 2) - 2]
+				@path << @visited_squares[(@next_index / 8) + 1]
+				@path << @visited_squares[1]
+				@path << @visited_squares[0]
+			elsif @next_index == 32 && @end_coor[0] != @end_coor[1]				
+				@path << @visited_squares[(@next_index / 2) + 1]
+				@path << @visited_squares[(@next_index / 8) + 1]
+				@path << @visited_squares[1]
+				@path << @visited_squares[0]
+			elsif @next_index == 34 && @end_coor[0] == @end_coor[1]
+				@path << @visited_squares[(@next_index / 2)]
+				@path << @visited_squares[(@next_index / 8)]
+				@path << @visited_squares[1]
+				@path << @visited_squares[0]
+			elsif @next_index == 34 && @end_coor[0] != @end_coor[1]
+				@path << @visited_squares[(@next_index / 2) + 1]
+				@path << @visited_squares[(@next_index / 8)]
+				@path << @visited_squares[1]
+				@path << @visited_squares[0]
 			elsif @next_index >= 15 && @possible_moves.size.odd?
-				@path << @visited_squares[(@next_index/4)]
+				@path << @visited_squares[(@next_index / 4)]
 				@path << @visited_squares[1]
 				@path << @visited_squares[0]
 			elsif @next_index >= 15 && @possible_moves.size.even?
-				@path << @visited_squares[(@next_index/4) + 1]
+				@path << @visited_squares[(@next_index / 4) + 1]
 				@path << @visited_squares[1]
 				@path << @visited_squares[0]	
-			elsif @possible_moves.size.odd? && (@next_index / 2).odd? && @next_index.even?
+			elsif @possible_moves.size.odd? && @next_index.even?
 				@path << @visited_squares[2]
 				@path << @visited_squares[0]			
-			elsif @possible_moves.size.odd? && (@next_index / 2).odd? && @next_index.odd?
+			elsif @possible_moves.size.odd? && @next_index.odd?
 				@path << @visited_squares[1]
 				@path << @visited_squares[0]				
-			elsif @possible_moves.size.even? && (@next_index / 2).odd? && @next_index.even?
+			elsif @possible_moves.size.even? && @next_index.even?
 				@path << @visited_squares[2]
 				@path << @visited_squares[0]
-			elsif @possible_moves.size.even? && (@next_index / 2).odd? && @next_index.odd?
+			elsif @possible_moves.size.even? && @next_index.odd?
 				@path << @visited_squares[1]
-				@path << @visited_squares[0]										
-			else
-				@path << @visited_squares[1]
-				@path << @visited_squares[0]				
+				@path << @visited_squares[0]						
 			end			
 		end									
 	end
@@ -103,13 +119,8 @@ class Knight
 		if @possible_moves.flatten(1).include?(@end_coor)
 			build_path
 			puts "You made it in #{@path.size - 1} moves! Here's your path:"
-			@path.each{|move| p move}
-			puts "\n"			
-			p @visited_squares
-			puts "\n"
-			@possible_moves.each{|move| p move}
-			p @possible_moves.size
-			p @visited_squares.size
+			@path.reverse!
+			@path.each{|move| p move}			
 			binding.pry			
 			exit						
 		end
@@ -117,4 +128,4 @@ class Knight
 end
 
 knight = Knight.new
-knight.knight_coors(["h", 1], ["a", 8])
+knight.knight_moves(["b", 7], ["f", 1])
