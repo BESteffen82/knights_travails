@@ -41,7 +41,7 @@ class Knight
     while @possible_moves.any?
       if @visited_squares.size.positive?
         @possible_moves.delete_if { |coors| coors.flatten.empty? }
-        @start_coor = @possible_moves[0].shift
+        @start_coor = @possible_moves[0].shift 
         next if @visited_squares.include?(@start_coor)
       else
         @start_coor = @possible_moves.shift
@@ -68,7 +68,7 @@ class Knight
     until @path.last == @visited_squares[0]
       @next_index = @visited_squares.size - @possible_moves.size
       @path << @visited_squares[@next_index] unless @next_index < 2
-      if @next_index == 2 || @next_index.zero?
+      if @next_index.zero? || @next_index == 2
         @path << @visited_squares[0]
       elsif @next_index == 32 && @end_coor[0] == @end_coor[1]
         @path << @visited_squares[(@next_index / 2) - 2]
@@ -103,20 +103,28 @@ class Knight
       end
       @path << @visited_squares[0]
     end
+		#binding.pry				
   end
+
+	def convert_to_file_rank(path)
+		@path.map do |move|			
+			move[0] = @file_array.values_at(move[0]).join
+			move[1] = move[1] + 1			
+		end
+	end
 
   def end_coor_reached
     if @possible_moves.flatten(1).include?(@end_coor)
       build_path
       puts "You made it in #{@path.size - 1} moves! Here's your path:"
-      @path.reverse!
-      @path.each { |move| p move }
-      p @visited_squares
-      binding.pry
-      exit
+      @path.reverse!.uniq!
+			convert_to_file_rank(@path)
+      @path.each { |move| p move }			
+			exit      
     end
   end
 end
 
 knight = Knight.new
-knight.knight_moves(['a', 1], ['h', 8])
+knight.knight_moves(['c', 8], ['a', 1])
+
