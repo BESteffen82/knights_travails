@@ -74,44 +74,35 @@ class Knight
 			elsif @next_index == 32 && @end_coor[0] == @end_coor[1]				
 				@path << @visited_squares[(@next_index / 2) - 2]
 				@path << @visited_squares[(@next_index / 8) + 1]
-				@path << @visited_squares[1]
-				@path << @visited_squares[0]
+				@path << @visited_squares[1]				
 			elsif @next_index == 32 && @end_coor[0] != @end_coor[1]				
 				@path << @visited_squares[(@next_index / 2) + 1]
 				@path << @visited_squares[(@next_index / 8) + 1]
-				@path << @visited_squares[1]
-				@path << @visited_squares[0]
+				@path << @visited_squares[1]				
 			elsif @next_index == 34 && @end_coor[0] == @end_coor[1]
 				@path << @visited_squares[(@next_index / 2)]
 				@path << @visited_squares[(@next_index / 8)]
-				@path << @visited_squares[1]
-				@path << @visited_squares[0]
+				@path << @visited_squares[1]				
 			elsif @next_index == 34 && @end_coor[0] != @end_coor[1]
 				@path << @visited_squares[(@next_index / 2) + 1]
 				@path << @visited_squares[(@next_index / 8)]
-				@path << @visited_squares[1]
-				@path << @visited_squares[0]
+				@path << @visited_squares[1]				
 			elsif @next_index >= 15 && @possible_moves.size.odd?
 				@path << @visited_squares[(@next_index / 4)]
-				@path << @visited_squares[1]
-				@path << @visited_squares[0]
+				@path << @visited_squares[1]				
 			elsif @next_index >= 15 && @possible_moves.size.even?
 				@path << @visited_squares[(@next_index / 4) + 1]
-				@path << @visited_squares[1]
-				@path << @visited_squares[0]	
+				@path << @visited_squares[1]					
 			elsif @possible_moves.size.odd? && @next_index.even?
-				@path << @visited_squares[2]
-				@path << @visited_squares[0]			
+				@path << @visited_squares[2]							
 			elsif @possible_moves.size.odd? && @next_index.odd?
-				@path << @visited_squares[1]
-				@path << @visited_squares[0]				
+				@path << @visited_squares[1]						
 			elsif @possible_moves.size.even? && @next_index.even?
-				@path << @visited_squares[2]
-				@path << @visited_squares[0]
+				@path << @visited_squares[2]				
 			elsif @possible_moves.size.even? && @next_index.odd?
-				@path << @visited_squares[1]
-				@path << @visited_squares[0]						
-			end			
+				@path << @visited_squares[1]										
+			end
+			@path << @visited_squares[0]			
 		end									
 	end
 	
@@ -121,6 +112,7 @@ class Knight
 			puts "You made it in #{@path.size - 1} moves! Here's your path:"
 			@path.reverse!
 			@path.each{|move| p move}			
+			p @visited_squares			
 			binding.pry			
 			exit						
 		end
@@ -128,4 +120,4 @@ class Knight
 end
 
 knight = Knight.new
-knight.knight_moves(["b", 7], ["f", 1])
+knight.knight_moves(["a", 1], ["h", 8])
